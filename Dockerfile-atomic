@@ -38,10 +38,10 @@ RUN microdnf --enablerepo=rhel-7-server-rpms --enablerepo=rhel-7-server-optional
 
 
 ### Add necessary Red Hat repos here
-    go-md2man -in /help.md -out /help.1 && \
+#    go-md2man -in /help.md -out /help.1 && \
 #    useradd -l -u ${USER_UID} -r -g 0 -d ${APP_ROOT} -s /sbin/nologin \
 #      -c "${USER_NAME} application user" ${USER_NAME} && #\
-    microdnf clean all
+#    microdnf clean all
 
 curl -L -o  https://get.docker.com/builds/Linux/x86_64/docker-1.13.1.tgz && tar -xf docker-1.13.1.tgz
 
