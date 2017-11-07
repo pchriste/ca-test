@@ -30,6 +30,7 @@ ENV APP_ROOT=/opt/app-root \
     USER_UID=99
 ENV APP_HOME=${APP_ROOT}/src  PATH=$PATH:${APP_ROOT}/bin
 
+
 RUN microdnf --enablerepo=rhel-7-server-rpms --enablerepo=rhel-7-server-optional-rpms --enablerepo=rhel-7-server-extras-rpms \
     install --nodocs golang-github-cpuguy83-go-md2man \
       net-tools \
@@ -37,22 +38,14 @@ RUN microdnf --enablerepo=rhel-7-server-rpms --enablerepo=rhel-7-server-optional
       docker-client && microdnf clean all
 
 
-### Add necessary Red Hat repos here
-RUN  go-md2man -in /help.md -out /help.1 && \
-#    useradd -l -u ${USER_UID} -r -g 0 -d ${APP_ROOT} -s /sbin/nologin \
-#      -c "${USER_NAME} application user" ${USER_NAME} && #\
-   microdnf clean all
+RUN go-md2man -in /help.md -out /help.1
 
-RUN curl -L -o  https://get.docker.com/builds/Linux/x86_64/docker-1.13.1.tgz && tar -xf docker-1.13.1.tgz
-
-
-#RUN mkdir -p /usr/local/openshift && yum install -y wget net-tools cronie && wget https://get.docker.com/builds/Linux/x86_64/docker-1.13.1.tgz && tar -xf docker-1.13.1.tgz
 RUN mkdir -p /usr/local/openshift/umagent
-#RUN cp ./docker/docker /usr/bin/
 ADD ./OpenshiftMonitor.tar.gz /usr/local/openshift/umagent
 ADD ./run.sh /usr/local/openshift/umagent
 RUN chmod +x /usr/local/openshift/umagent/run.sh
 USER 99
 WORKDIR /usr/local/openshift/umagent
 CMD ["bash","run.sh"]
+
 
